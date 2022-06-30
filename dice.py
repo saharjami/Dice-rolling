@@ -43,57 +43,53 @@ DICE_ART = {
         "│  ●   ●  │",
         "│  ●   ●  │",
         "└─────────┘",
-    ),
+    )
 }
+
 DIE_HEIGHT = len(DICE_ART[1])
 DIE_WIDTH = len(DICE_ART[1][0])
 DIE_FACE_SEPARATOR = " "
 
+
 def parse_input(input_string):
-    if input_string.strip() in {"1", "2", "3", "4", "5", "6"}:
-        return int(input_string)
+    if input_string in range(1, 5):
+        return input_string
     else:
-        print("Please enter a number from 1 to 6.")
+        print("Please choose a number from 1 to 4: ")
         raise SystemExit(1)
 
-def roll_dice(num_dice):
-    roll_results = []
-    for _ in range(num_dice):
+
+def roll_dice(dice_num):
+    roll_num = []
+    for i in range(dice_num):
         roll = random.randint(1, 6)
-        roll_results.append(roll)
-    return roll_results
+        roll_num.append(roll)
+    return roll_num
 
-def generate_dice_faces_diagram(dice_values):
-    dice_faces = _get_dice_faces(dice_values)
-    dice_faces_rows = _generate_dice_faces_rows(dice_faces)
 
-    width = len(dice_faces_rows[0])
-    diagram_header = " RESULTS ".center(width, "~")
-
-    dice_faces_diagram = "\n".join([diagram_header] + dice_faces_rows)
-    return dice_faces_diagram
-
-def _get_dice_faces(dice_values):
+def generate_dice_faces(dice_values):
     dice_faces = []
-    for value in dice_values:
-        dice_faces.append(DICE_ART[value])
+    for i in dice_values:
+        dice_faces.append(DICE_ART[i])
     return dice_faces
 
-def _generate_dice_faces_rows(dice_faces):
+
+def generate_results(dice_faces):
     dice_faces_rows = []
-    for row_idx in range(DIE_HEIGHT):
+    for i in range(DIE_HEIGHT):
         row_components = []
-        for die in dice_faces:
-            row_components.append(die[row_idx])
+        for j in dice_faces:
+            row_components.append(j[i])
         row_string = DIE_FACE_SEPARATOR.join(row_components)
         dice_faces_rows.append(row_string)
-    return dice_faces_rows
 
-num_dice_input = input("How many dice do you want to roll? [1-6] ")
-num_dice = parse_input(num_dice_input)
+    result = "\n".join(dice_faces_rows)
+    return result
 
-roll_results = roll_dice(num_dice)
 
-dice_face_diagram = generate_dice_faces_diagram(roll_results)
-
-print(f"\n{dice_face_diagram}")
+dice_num_input = int(input("How many dice do you want to roll [1-4]? "))
+dice_num = parse_input(dice_num_input)
+roll_list = roll_dice(dice_num)
+roll_faces = generate_dice_faces(roll_list)
+roll_result = generate_results(roll_faces)
+print(roll_result)
